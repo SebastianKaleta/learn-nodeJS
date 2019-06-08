@@ -1,0 +1,1 @@
+nodemon plik - wywołuje automatyczna aktualizacje  bez ponownego wywoływania jak w przypadku: node plik.js
