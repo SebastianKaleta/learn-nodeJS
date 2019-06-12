@@ -33,11 +33,11 @@ const fs = require("fs");
 // READFILE
 
 // asynchronicznie
-fs.readFile("names.txt", "utf-8", (err, data) => {
-  if (err) throw Error(err);
-  // używając throw zatrzyma się program a nie tylko przerwie funkcje
-  console.log(data);
-});
+// fs.readFile("names.txt", "utf-8", (err, data) => {
+//   if (err) throw Error(err);
+// używając throw zatrzyma się program a nie tylko przerwie funkcje
+//   console.log(data);
+// });
 
 // synchronicznie
 // Korzystając z sycnchronicznej metody najczesciej prypisujemy wynik do czegos
@@ -48,12 +48,36 @@ fs.readFile("names.txt", "utf-8", (err, data) => {
 //   console.log(err);
 // }
 
-let names = "";
+// let names = "";
 
-try {
-  names = fs.readFileSync("names.txt", "utf8");
-} catch (err) {
-  // console.log(err);
-  names = false;
-}
-console.log(names);
+// try {
+//   names = fs.readFileSync("names.txt", "utf8");
+// } catch (err) {
+//   // console.log(err);
+//   names = false;
+// }
+// console.log(names);
+
+// 5.WRITEFILE
+// Odczyt pliku i zapisanie do innego jego zawartosci
+// fs.readFile("names.txt", "utf8", (err, data) => {
+//   if (err) console.log("nie udało się");
+//   fs.writeFile("users.txt", data, err => {
+//     if (err) console.log(err);
+//     else console.log("Udało się zapisać w pliku");
+//   });
+// });
+
+// domyślnie kodowanie utf8
+// const names = "A Dawid i Ania idą na spacer\n";
+// fs.appendFile("users.txt", names, err => {
+//   if (err) console.log(err);
+//   else console.log("Udało się zapisać w pliku");
+// });
+
+fs.readFile("names.txt", "utf8", (err, data) => {
+  fs.appendFile("users.txt", names, err => {
+    if (err) console.log(err);
+    else console.log("Udało się zapisać w pliku");
+  });
+});
