@@ -75,8 +75,10 @@ const fs = require("fs");
 //   else console.log("Udało się zapisać w pliku");
 // });
 
-fs.readFile("names.txt", "utf8", (err, data) => {
-  fs.appendFile("users.txt", names, err => {
+
+// readfile ma kodowanie null, dostajemy wartosc pliku binarnie ale append ma domyslnie kodowanie utf8 więc zamienia treść binarna z buffera na tekst a nastepnie zapisuje
+fs.readFile("names.txt", (err, data) => {
+  fs.appendFile("users.txt", data, err => {
     if (err) console.log(err);
     else console.log("Udało się zapisać w pliku");
   });
