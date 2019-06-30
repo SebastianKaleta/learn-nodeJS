@@ -63,7 +63,57 @@ app.listen(3000, "0.0.0.0", () => {
 //   console.log("Hello, " + req.params.name)
 // })
 // -----------
-app.get('/article/:id/:title?', req => {
-  console.log(req.params);
+// app.get('/article/:id/:title?', req => {
+//   console.log(req.params);
 
+// })
+
+// -------------------------------------------
+// RESPONSE
+
+// app.get('/', (req, res) => {
+//   res.write('Hello, World!'); //wyświetlnie informacji
+//   res.end();
+
+// })
+// app.get('/', (req, res) => {
+
+//   const str = 'Zażółć gęslą jaźń'
+//   const ar = str.split(' ')
+//   res.send(ar); //robi to samo co wyżej, z tym ze dodaje kilka rzeczy: uzywa domyslnej czcionki html, nadaje kodowanie utf-8 i podaje długość zawartości
+// })
+// app.get('/world', (req, res) => {
+//   res.send({
+//     text: 'hello world',
+//     isGood: true
+//   });
+// })
+// express dba za nas by odpowiednio konwertować obiekty i tablice do formatu json, metoda send wyręcza nas na wielu płaszczyznach i najczesciej wykorzystujemy ją do tego typu rzeczy
+// jednak do przesyłania json wykorzystuje się res.json()
+
+// PRZEKIEROWANIE
+
+// app.get('/', (req, res) => {
+//   // res.location('/another/path') //teraz dostajemy w nagłówku kod odpowiedzi 200, który nie jest taki jak potrzebujemy a potrzeba nam <300
+
+//   // res.sendStatus(302) // możemy użyć zamiast res.end i podać tu status jaki nas interesuje, co da nam oczekiwane przekierowanie
+
+//   // res.end() //przy res.location pamietać musimy o zakończeniu połączenia, ponieważ nie ma tego wbudowane jak w res.send np
+//   // --------
+//   // TUTAJ PRZYCHODZI Z POMOCA EXPRESS
+//   // Express daje nam metode res.redirect(), która daje nam w jednej komendzie kilka rzeczy:
+//   // 1.Używanie specjalnych ścieżek - względnych i cofających
+//   // 2.Ustawia odpowiedni kod odpowiedzi HTTP i pozwala go zmienić
+//   // 3. Tworzy prosty szablon HTML do przekierowania jeżeli standardowe kody zawiodą
+//   res.redirect('https://google.com')
+// })
+
+app.get('/', (req, res) => {
+  res.send('<a href="/go_back">Cofnij</a>')
+})
+
+
+app.get('/go_back', (req, res) => {
+  // res.redirect('..');
+  res.redirect('back'); //odczytuje z jakiej ściezki przyszliśmy i do niej nas cofa, domyślnie cofa nas na strone główną
 })
