@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 
 const app = express(); //stworzenie serwera
 //nasłuchiwanie
@@ -108,12 +109,48 @@ app.listen(3000, "0.0.0.0", () => {
 //   res.redirect('https://google.com')
 // })
 
-app.get('/', (req, res) => {
-  res.send('<a href="/go_back">Cofnij</a>')
-})
+// app.get('/', (req, res) => {
+//   res.send('<a href="/go_back">Cofnij</a>')
+// });
 
+// app.get('/go_back', (req, res) => {
+//   // res.redirect('..');
+//   res.redirect('back'); //odczytuje z jakiej ściezki przyszliśmy i do niej nas cofa, domyślnie cofa nas na strone główną
+// })
 
-app.get('/go_back', (req, res) => {
-  // res.redirect('..');
-  res.redirect('back'); //odczytuje z jakiej ściezki przyszliśmy i do niej nas cofa, domyślnie cofa nas na strone główną
-})
+// ----------------
+// PRZESYŁANIE PLIKU
+
+app.get("/", (req, res) => {
+  const fileName = "index.html";
+  res.sendFile(fileName, {
+    root: path.join(__dirname, "static")
+  });
+});
+
+// app.get("/logo", (req, res) => {
+//   // const fileName = path.join(__dirname, "static/image.png");
+//   // uzywająć zaimportowanego path(path pozwala nam pobrac scieżkę główną i wygodnie utworzyć kolejną poprzez dopisanie do niej)
+//   const fileName = "image.png";
+//   res.sendFile(fileName, {
+//     root: path.join(__dirname, "static") //kolejna opcja express, któa ustawia naszą domową/główną ścieżkę i nie pozwala wychodzić wyżej, dzięki temu zapobiegamy odczytu plików aplikacji lub waznych danych, powinno się znaleźć w każdekj aplikacji
+//   });
+// });
+
+// app.get("/logo", (req, res) => {
+//   const fileName = "image.png";
+//   res.attachment(fileName, {
+//     root: path.join(__dirname, "static")
+//     //res.attachment wymusza na przeglądarce pobieranie pliku
+//   });
+//   res.end(); //uzycie attachment wymaga rownież użycia res.end, by zakończyć działanie
+// });
+
+// kolejną opcją jest res.download - jest to połaczenie res.sendFile i res.attachment, czyli wywołuje pobieranie ale pozwala dopisać opcje z sendFile,np( lastModified,headers,dotfiles-allow/deny/ignore(domyślnie), i inne)
+
+app.get("/logo", (req, res) => {
+  const fileName = path.join(__dirname, "static/image.png");
+  res.download(fileName, "Jakis moj plik.png", {
+    // musimy pamiętać, że root tu nie działa, również nie podajemy res.end
+  });
+});
