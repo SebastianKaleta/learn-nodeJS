@@ -121,12 +121,12 @@ app.listen(3000, "0.0.0.0", () => {
 // ----------------
 // PRZESYŁANIE PLIKU
 
-app.get("/", (req, res) => {
-  const fileName = "index.html";
-  res.sendFile(fileName, {
-    root: path.join(__dirname, "static")
-  });
-});
+// app.get("/", (req, res) => {
+//   const fileName = "index.html";
+//   res.sendFile(fileName, {
+//     root: path.join(__dirname, "static")
+//   });
+// });
 
 // app.get("/logo", (req, res) => {
 //   // const fileName = path.join(__dirname, "static/image.png");
@@ -148,9 +148,20 @@ app.get("/", (req, res) => {
 
 // kolejną opcją jest res.download - jest to połaczenie res.sendFile i res.attachment, czyli wywołuje pobieranie ale pozwala dopisać opcje z sendFile,np( lastModified,headers,dotfiles-allow/deny/ignore(domyślnie), i inne)
 
-app.get("/logo", (req, res) => {
-  const fileName = path.join(__dirname, "static/image.png");
-  res.download(fileName, "Jakis moj plik.png", {
-    // musimy pamiętać, że root tu nie działa, również nie podajemy res.end
-  });
+// app.get("/logo", (req, res) => {
+//   const fileName = path.join(__dirname, "static/image.png");
+//   res.download(fileName, "Jakis moj plik.png", {
+//     // musimy pamiętać, że root tu nie działa, również nie podajemy res.end
+//   });
+// });
+// -----------------
+// NAGŁÓWKI
+
+app.get("/", (req, res) => {});
+
+app.get("/hi/:name", (req, res) => {
+  const { name } = req.params;
+
+  res.cookie("visitor_name", name);
+  res.send("Imię zapisano");
 });
