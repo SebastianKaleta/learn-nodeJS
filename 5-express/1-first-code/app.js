@@ -157,24 +157,39 @@ app.listen(3000, "0.0.0.0", () => {
 // -----------------
 // NAGŁÓWKI
 
+// app.get("/", (req, res) => {
+//   res.send("Strona główna");
+// });
+
+// app.get("/hi/:name", (req, res) => {
+//   const { name } = req.params;
+
+//   // const newDate = new Date();
+//   // newDate.setDate(newDate.getDate() + 7);
+//   // // ustawienie by sesja ciastka trwała 7 dni nawet po wyłączeniu przeglądarki
+//   res.cookie("visitor_name", name, {
+//     // expires: newDate,
+//     maxAge: 5 * 60 * 1000 //inna opcja która wymaga podania tylko ilości czasu jaki ma być w pamieci przeglądarki
+//   });
+//   res.send("Imię zapisano");
+// });
+// app.get("/logout", (req, res) => {
+//   res.clearCookie("visitor_name");
+//   //czyszczenie ciastek z przeglądarki
+//   res.redirect("/"); //przekierowanie
+// });
+
+// ------------------------
+// MIDDLEWARE
+
+// middleware zawsze dajemy przed ścieżkami
+app.use(express.json());
+
 app.get("/", (req, res) => {
   res.send("Strona główna");
 });
+app.post("/hallo", (req, res) => {
+  const { name, surname } = req.body;
 
-app.get("/hi/:name", (req, res) => {
-  const { name } = req.params;
-
-  // const newDate = new Date();
-  // newDate.setDate(newDate.getDate() + 7);
-  // // ustawienie by sesja ciastka trwała 7 dni nawet po wyłączeniu przeglądarki
-  res.cookie("visitor_name", name, {
-    // expires: newDate,
-    maxAge: 5 * 60 * 1000 //inna opcja która wymaga podania tylko ilości czasu jaki ma być w pamieci przeglądarki
-  });
-  res.send("Imię zapisano");
-});
-app.get("/logout", (req, res) => {
-  res.clearCookie("visitor_name");
-  //czyszczenie ciastek z przeglądarki
-  res.redirect("/"); //przekierowanie
+  res.send(`Witaj ${name} ${surname}`);
 });
