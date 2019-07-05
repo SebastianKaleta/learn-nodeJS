@@ -183,13 +183,34 @@ app.listen(3000, "0.0.0.0", () => {
 // MIDDLEWARE
 
 // middleware zawsze dajemy przed ścieżkami
-app.use(express.json());
+// app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("Strona główna");
-});
-app.post("/hallo", (req, res) => {
-  const { name, surname } = req.body;
+// app.get("/", (req, res) => {
+//   res.send("Strona główna");
+// });
+// app.post("/hello", (req, res) => {
+//   console.log(req.body);
+//   const { name, surname } = req.body;
 
-  res.send(`Witaj ${name} ${surname}`);
-});
+//   res.send(`Witaj ${name} ${surname}`);
+// });
+
+
+// ---------------------
+// MIDDLEWARE plików statycznych
+
+app.use(express.json())
+app.use(express.static(path.join(__dirname, 'static')))
+
+//express.static rozwiązuje za nas dodawanie plików statycznych, gdzie poprzednio wymagało od nas napisanie kilku linijek kodu(poniżej), natomiast teraz rozwiązuje to za nas :
+// app.use(express.static(path.join(__dirname, 'static')))
+// gdzie podajemy ściezkę dla naszego folderu z plikami statycznymi
+
+
+
+// app.get('/', (req, res) => {
+//   const fileName = 'index.html';
+//   res.sendFile(filename, {
+//     root: path.join(__dirname, 'static')
+//   })
+// })
