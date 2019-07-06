@@ -199,8 +199,8 @@ app.listen(3000, "0.0.0.0", () => {
 // ---------------------
 // MIDDLEWARE plików statycznych
 
-app.use(express.json())
-app.use(express.static(path.join(__dirname, 'static')))
+// app.use(express.json())
+// app.use(express.static(path.join(__dirname, 'static')))
 
 //express.static rozwiązuje za nas dodawanie plików statycznych, gdzie poprzednio wymagało od nas napisanie kilku linijek kodu(poniżej), natomiast teraz rozwiązuje to za nas :
 // app.use(express.static(path.join(__dirname, 'static')))
@@ -214,3 +214,46 @@ app.use(express.static(path.join(__dirname, 'static')))
 //     root: path.join(__dirname, 'static')
 //   })
 // })
+
+//ODCZYT COOKIE
+
+// wymaga zainstalowania cookie-parser
+// npm install cookie-parser --save/npm i cookie-parser -S
+// Następnie dołączenie jej na początku pliku jak inne paczki(na samej górze)
+
+const cookieParser = require('cookie-parser');
+
+app.use(cookieParser());
+
+// Od teraz cookies będą dostępne pod nazwą: req.cookies a tzw. podpisane pod req.signedCookies
+
+app.get("/", (req, res) => {
+  const {
+    visitor_name
+  } = req.cookies
+
+  if (visitor_name) {
+    res.send(`Witaj ${visitor_name}`)
+  } else {
+    res.send('Czy my się znamy?')
+  }
+  // powyżej pobieramy podaną nazwę użytkownika i wykorzystujemy ją, we wszystkim pomaga nam express i wykonuje za nas duż część pracy, pobiera dane, zapisuje w cookies, odczytuje je i wylogowuje nas
+
+  res.send("Strona główna");
+});
+
+app.get("/hi/:name", (req, res) => {
+  const {
+    name
+  } = req.params;
+  res.cookie("visitor_name", name, {
+    // expires: newDate,
+    maxAge: 5 * 60 * 1000
+  });
+  res.send("Imię zapisano");
+});
+app.get("/logout", (req, res) => {
+  res.clearCookie("visitor_name");
+  //czyszczenie ciastek z przeglądarki
+  res.redirect("/"); //przekierowanie
+});
