@@ -1,6 +1,8 @@
 const express = require("express");
 const path = require("path");
 
+const usersRoutes = require('./routes/users')
+
 const app = express(); //stworzenie serwera
 //nasłuchiwanie
 app.listen(3000, "0.0.0.0", () => {
@@ -227,33 +229,16 @@ app.use(cookieParser());
 
 // Od teraz cookies będą dostępne pod nazwą: req.cookies a tzw. podpisane pod req.signedCookies
 
-app.get("/", (req, res) => {
-  const {
-    visitor_name
-  } = req.cookies
+usersRoutes(app);
 
-  if (visitor_name) {
-    res.send(`Witaj ${visitor_name}`)
-  } else {
-    res.send('Czy my się znamy?')
-  }
-  // powyżej pobieramy podaną nazwę użytkownika i wykorzystujemy ją, we wszystkim pomaga nam express i wykonuje za nas duż część pracy, pobiera dane, zapisuje w cookies, odczytuje je i wylogowuje nas
+// GENERATOR STRUKTURY APLIKACJI
 
-  res.send("Strona główna");
-});
+// Możemy używać webpack, a także express-generator
+// Instalujemy globalnie:
+// npm install express-generator -g
 
-app.get("/hi/:name", (req, res) => {
-  const {
-    name
-  } = req.params;
-  res.cookie("visitor_name", name, {
-    // expires: newDate,
-    maxAge: 5 * 60 * 1000
-  });
-  res.send("Imię zapisano");
-});
-app.get("/logout", (req, res) => {
-  res.clearCookie("visitor_name");
-  //czyszczenie ciastek z przeglądarki
-  res.redirect("/"); //przekierowanie
-});
+// Teraz żeby utworzyć wykonujemy komendę:
+// express --no-view --git nazwa_projektu_i_folderu_aplikacji
+
+// --no-view oznacza nie korzystanie z systemu szablonów html
+// --git automatycznie generuje plik gitignore
