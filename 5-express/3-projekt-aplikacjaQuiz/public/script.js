@@ -1,32 +1,29 @@
 const question = document.querySelector('#question');
-// const answer1 = document.querySelector('#answer1');
-// const answer2 = document.querySelector('#answer2');
-// const answer3 = document.querySelector('#answer3');
-// const answer4 = document.querySelector('#answer4');
-
-
 
 function fillQuestionElements(data) {
   const gameBoard = document.querySelector('#game-board');
   const h2 = document.querySelector('h2');
+
   if (data.winner === true) {
     gameBoard.style.display = 'none';
     h2.innerText = 'Wygrałeś!!!'
     return;
   }
 
+
+  if (data.loser === true) {
+    gameBoard.style.display = 'none';
+    h2.innerText = 'Nie poszło tym razem, spróbuj ponownie.'
+    return;
+  }
+
   question.innerText = data.question;
-  // answer1.innerText = data.answers[0];
-  // answer2.innerText = data.answers[1];
-  // answer3.innerText = data.answers[2];
-  // answer4.innerText = data.answers[3];
 
   for (const i in data.answers) {
     const answerEl = document.querySelector(`#answer${Number(i)+1}`);
     answerEl.innerText = data.answers[i];
   }
 }
-
 
 
 function showNextQuestion() {
@@ -59,7 +56,7 @@ function sendAnswer(answerIndex) {
     })
 }
 
-const buttons = document.querySelectorAll('button');
+const buttons = document.querySelectorAll('.answer-btn');
 
 for (const button of buttons) {
   button.addEventListener('click', (event) => {
@@ -69,3 +66,49 @@ for (const button of buttons) {
 
   })
 }
+// telefon do przyjaciela
+const tipDiv = document.querySelector('#tip')
+
+function handleFriendsAnswer(data) {
+  tipDiv.innerText = data.text;
+}
+
+
+function callToAFriend() {
+  fetch(`/help/friend`, {
+      method: 'GET',
+    })
+    .then(resp => resp.json())
+    .then(data => {
+      handleFriendsAnswer(data);
+    })
+}
+
+
+document.querySelector('#callToAFriend').addEventListener('click', callToAFriend);
+
+function handleHalfOnHalfAnswer(data) {
+  if (typeof data.text === 'string') {
+    tipDiv.innerText = data.text;
+  } else {
+    for (const button of buttons) {
+      if (data.answersToRemove.indexOf(button.innerText) > -1) {
+        button.innerText = ""
+      }
+    }
+  }
+}
+
+
+function halfOnHalf() {
+  fetch(`/help/half`, {
+      method: 'GET',
+    })
+    .then(resp => resp.json())
+    .then(data => {
+      handleHalfOnHalfAnswer(data);
+    })
+}
+
+
+document.querySelector('#halfOnHalf').addEventListener('click', halfOnHalf);

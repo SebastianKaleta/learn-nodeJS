@@ -50,9 +50,11 @@ function gameRoutes(app) {
 
   app.post('/answer/:index', (req, res) => {
 
-    if (isGameOver) res.json({
-      loser: true
-    });
+    if (isGameOver) {
+      res.json({
+        loser: true
+      });
+    }
 
     const {
       index
@@ -75,6 +77,48 @@ function gameRoutes(app) {
 
 
   })
+
+  // telefon do przyjaciela
+  app.get('/help/friend', (req, res) => {
+    if (callToAFriendUsed) {
+      return res.json({
+        text: 'To koło ratunkowe było już wykorzystane.',
+      });
+    }
+
+    callToAFriendUsed = true;
+    const doesFriendKnowAnswer = Math.random() < 0.5;
+    const question = questions[goodAnswers];
+
+    res.json({
+      text: doesFriendKnowAnswer ? `Hmm,wydaje mi się, że odpowiedź to ${question.answers[question.correctAnswer]}` : "Hmm, no nie wiem"
+    });
+
+  });
+
+
+
+  // pół na pół
+  app.get('/help/half', (req, res) => {
+    if (halfOnHalfUsed) {
+      return res.json({
+        text: 'To koło ratunkowe było już wykorzystane.',
+      });
+    }
+
+    halfOnHalfUsed = true;
+
+    const question = questions[goodAnswers];
+
+    const answersCopy = question.answers.filter((s, index) => (index !== question.correctAnswer));
+
+    answersCopy.splice(~~(Math.random() * answersCopy.length), 1);
+
+    res.json({
+      answersToRemove: answersCopy,
+    });
+
+  });
 
 }
 
