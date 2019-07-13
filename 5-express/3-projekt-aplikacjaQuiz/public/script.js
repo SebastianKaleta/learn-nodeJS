@@ -87,6 +87,7 @@ function callToAFriend() {
 
 document.querySelector('#callToAFriend').addEventListener('click', callToAFriend);
 
+// pół na pół
 function handleHalfOnHalfAnswer(data) {
   if (typeof data.text === 'string') {
     tipDiv.innerText = data.text;
@@ -112,3 +113,29 @@ function halfOnHalf() {
 
 
 document.querySelector('#halfOnHalf').addEventListener('click', halfOnHalf);
+
+// pytanie do publiczości
+
+function handleCrowdAnswer(data) {
+  if (typeof data.text === 'string') {
+    tipDiv.innerText = data.text;
+  } else {
+    data.chart.forEach((percent, index) => {
+      buttons[index].innerText = `${buttons[index].innerText}:${percent}%`
+    })
+  }
+
+}
+
+function questionToTheCrowd() {
+  fetch(`/help/crowd`, {
+      method: 'GET',
+    })
+    .then(resp => resp.json())
+    .then(data => {
+      handleCrowdAnswer(data);
+    })
+}
+
+
+document.querySelector('#questionToTheCrowd').addEventListener('click', questionToTheCrowd);
